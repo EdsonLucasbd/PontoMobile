@@ -1,12 +1,10 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
 import SocialButton from '../../components/SocialButton';
 import { Container, MyLogo } from './styles';
 
+import onGoogleButtonPress from '../../services/googleLogin';
 
-// import { Container } from './styles';
-
-const Login = () => {
+const Login = ({navigation}) => {
 
   return (
     <Container>
@@ -15,12 +13,13 @@ const Login = () => {
         iconName='google' 
         bgColor='#D93025' 
         btnText='Acessar com Google'
+        onPress={onGoogleButtonPress}
       />
-      <SocialButton 
+      {/* <SocialButton 
         iconName='facebook' 
         bgColor='#4867AA' 
         btnText='Acessar com Facebook'
-      />
+      /> */}
     </Container>
   );
 }

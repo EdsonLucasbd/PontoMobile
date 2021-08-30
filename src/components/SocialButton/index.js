@@ -4,9 +4,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { ButtonContainer, SocialButtonStyle } from './styles';
 
 const SocialButton = ({iconName, bgColor, onPress, btnText}) => {
+  // const handlePress = () => onPress;
+
   return (
     <ButtonContainer>
-      <SocialButtonStyle /* onPress={onPress} */ bgColor={bgColor}> 
+      <SocialButtonStyle onPress={() => onPress()} bgColor={bgColor}> 
         <Icon
           name={iconName}
           color='#f8f8f8'

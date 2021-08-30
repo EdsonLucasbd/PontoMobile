@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "278514425620",
+    "project_id": "pontomobile-dev-544be",
+    "storage_bucket": "pontomobile-dev-544be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278514425620:android:80d41155ffe1266030ec01",
+        "android_client_info": {
+          "package_name": "com.pontomobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "278514425620-n4kvod1p6106scnpvj9q1ddp7ed3h8b7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnv1Tmo96TPpwr4bWk1NZyprv9G6B3CWw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "278514425620-n4kvod1p6106scnpvj9q1ddp7ed3h8b7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,74 +1,41 @@
+import 'react-native-gesture-handler';
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import Home from '../pages/Home';
-import Login from '../pages/Login';
 import Preload from '../pages/Preload';
-import Profile from '../pages/Profile';
-import Historic from '../pages/Historic';
-import BottomTabButton from '../components/BottomTabButton';
+import Login from '../pages/Login';
+import TabRoutes from './mainTabs';
 
-import { MaterialCommunityIcons, MaterialIcons } from 'react-native-vector-icons'
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 export default function Routes() {
 
   return (
-    <Tab.Navigator
+    <Stack.Navigator
       initialRouteName="Preload"
       screenOptions={{
         headerShown: false,
-        tabBarShowLabel: false,
-        tabBarStyle: {
-          position: 'absolute', 
-          borderTopLeftRadius: 20, 
-          borderTopRightRadius: 20, 
-          height: 58, 
-          backgroundColor: '#3E5991', 
-          borderTopColor: 'transparent',
-          paddingTop: 5,
-          paddingBottom: 5,
-        }
-      }}
-      //tabBar={props => <CustomTabBar {...props} />}
-      
+    }}
     >
-      <Tab.Screen 
+      <Stack.Screen 
         name="Preload" 
         component={Preload} 
       />
-      <Tab.Screen 
+      <Stack.Screen 
         name="Login" 
         component={Login} 
-      />
-      <Tab.Screen 
-        name="Home" 
-        component={Home} 
         options={{
-          tabBarIcon: ({ focused }) => (
-            <BottomTabButton iconName='home' focused={focused}/>
-          ),
+          gestureEnabled: false,
         }}
       />
-      <Tab.Screen 
-        name="Profile" 
-        component={Profile} 
+      <Stack.Screen 
+        name="TabRoutes" 
+        component={TabRoutes} 
         options={{
-          tabBarIcon: ({ focused }) => (
-            <BottomTabButton iconName='person' focused={focused}/>
-          ),
+          gestureEnabled: false,
         }}
       />
-      <Tab.Screen 
-        name="Historic" 
-        component={Historic} 
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <BottomTabButton iconName='file' focused={focused}/>
-          ),
-        }}
-      />
-    </Tab.Navigator>
+    </Stack.Navigator>
   );
 }
