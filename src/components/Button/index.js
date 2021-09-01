@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 // import { Container } from './styles';
 
@@ -7,7 +7,7 @@ const CustomButton = ({style, icon, buttonText, textColor, onPress}) => {
   const {iconName, iconSize, iconColor} = icon;
   
   return (
-    <TouchableOpacity style={style} onPress={() => onPress()}>
+    <TouchableOpacity style={[styles.button, style]} onPress={() => onPress()}>
       { icon !== '' 
         && <FontAwesome
             style={{marginRight: 12}}
@@ -20,5 +20,15 @@ const CustomButton = ({style, icon, buttonText, textColor, onPress}) => {
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    marginTop: 20,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 3,
+  }
+})
 
 export default CustomButton;

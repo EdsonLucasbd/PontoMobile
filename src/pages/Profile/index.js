@@ -1,22 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, View } from 'react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { AuthContext } from '../../routes/AuthProvider';
 
 // import { Container } from './styles';
 
 const Profile = ({navigation}) => {
- const signOut = async () => {
-    try {
-      await GoogleSignin.signOut();
-      navigation.navigate('Login')
-      //this.setState({ user: null }); // Remember to remove the user from your app's state as well
-    } catch (error) {
-      console.error(error);
-    }
-  };
+ const {revokeAccess, logout} = useContext(AuthContext);
+
+ const handleLogout = () => {
+   logout()
+   revokeAccess();
+ }
   return (
   <View>
-    <Button title='Sair' onPress={signOut}/>
+    <Button title='Sair' onPress={handleLogout}/>
   </View>
   );
 }

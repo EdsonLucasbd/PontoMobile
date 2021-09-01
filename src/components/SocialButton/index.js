@@ -1,10 +1,17 @@
 import React from 'react';
 import { Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native'
 import { ButtonContainer, SocialButtonStyle } from './styles';
 
 const SocialButton = ({iconName, bgColor, onPress, btnText}) => {
-  // const handlePress = () => onPress;
+  const navigation = useNavigation()
+
+  /* const handlePress = () => {
+    onPress() !== null 
+    ? navigation.reset({ routes:[{name: 'TabRoutes'}] })
+    : alert('Algo deu errado, tente novamente.')
+  }; */
 
   return (
     <ButtonContainer>

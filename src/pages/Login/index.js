@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import SocialButton from '../../components/SocialButton';
 import { Container, MyLogo } from './styles';
 
 import onGoogleButtonPress from '../../services/googleLogin';
+import { AuthContext } from '../../routes/AuthProvider';
 
 const Login = ({navigation}) => {
+  const {googleLogin, facebookLogin} = useContext(AuthContext);
 
   return (
     <Container>
@@ -13,13 +15,14 @@ const Login = ({navigation}) => {
         iconName='google' 
         bgColor='#D93025' 
         btnText='Acessar com Google'
-        onPress={onGoogleButtonPress}
+        onPress={googleLogin}
       />
-      {/* <SocialButton 
+      <SocialButton 
         iconName='facebook' 
         bgColor='#4867AA' 
         btnText='Acessar com Facebook'
-      /> */}
+        onPress={facebookLogin}
+      />
     </Container>
   );
 }
