@@ -5,8 +5,14 @@ import { Container, MyLogo } from './styles';
 import onGoogleButtonPress from '../../services/googleLogin';
 import { AuthContext } from '../../routes/AuthProvider';
 
-const Login = ({navigation}) => {
+import firestore from '@react-native-firebase/firestore';
+
+const Login = () => {
   const {googleLogin, facebookLogin} = useContext(AuthContext);
+
+  const googleHandleClick = () => {
+
+  }
 
   return (
     <Container>

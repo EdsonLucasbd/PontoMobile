@@ -2,10 +2,12 @@ import React, { createContext, useState } from 'react';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
+import firestore from '@react-native-firebase/firestore';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
+  const ref = firestore().collection('users');
   const [user, setUser] = useState(null);
   return (
     <AuthContext.Provider
@@ -15,14 +17,21 @@ export const AuthProvider = ({children}) => {
         googleLogin: async () => {
           try {
             // Get the users ID token
-            const { idToken } = await GoogleSignin.signIn();
-
+            const userInfo = await GoogleSignin.signIn();
+            const { idToken } = userInfo;
             // Create a Google credential with the token
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
             // Sign-in the user with the credential
-            await auth().signInWithCredential(googleCredential);
-
+            await auth().signInWithCredential(googleCredential)
+            .then(data => {
+              ref.doc(data.user.uid).set({
+                name: data.user.displayName,
+                image: data.user.photoURL,
+                company: ''
+              });
+              console.log('User signed in!')
+            })
           } catch(err) {
             console.log(err);
           }
@@ -47,7 +56,8 @@ export const AuthProvider = ({children}) => {
             const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
 
             // Sign-in the user with the credential
-            await auth().signInWithCredential(facebookCredential);
+            await auth().signInWithCredential(facebookCredential)
+            .then(() => console.log('User signed in!'));
 
           } catch (err) {
             console.log(err);

@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { Image, Text, View } from 'react-native';
+import {useTheme} from 'styled-components';
 
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
@@ -7,8 +8,11 @@ import { Container } from './styles';
 import { AuthContext } from '../../routes/AuthProvider';
 import UserAvatar from '../../components/UserAvatar';
 import CustomButton from '../../components/Button';
+import Timer from '../../components/Timer';
+
 
 const Home = () => {
+  const theme = useTheme();
   //const {user} = useContext(AuthContext);
   // const [user, setUser] = useState(null);
   /* useEffect(() => {
@@ -26,11 +30,12 @@ const Home = () => {
   return (
     <Container>
       <UserAvatar />
+      <Timer />
       <CustomButton 
         style={{
           width: 206, 
           height: 82,
-          backgroundColor: '#3E5991',
+          backgroundColor: theme.colors.primary,
         }}
         icon=''
         buttonText={'Iniciar jornada'}

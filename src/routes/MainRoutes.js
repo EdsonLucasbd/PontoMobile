@@ -5,16 +5,18 @@ import Home from '../pages/Home';
 import Profile from '../pages/Profile';
 import Historic from '../pages/Historic';
 import BottomTabButton from '../components/BottomTabButton';
+import { Text } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
-const TabRoutes = () => {
+const MainRoutes = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
+        tabBarHideOnKeyboard: true,
         tabBarStyle: {
           position: 'absolute', 
           borderTopLeftRadius: 20, 
@@ -58,4 +60,4 @@ const TabRoutes = () => {
   );
 }
 
-export default TabRoutes;
+export default MainRoutes;
