@@ -10,11 +10,14 @@ import UserAvatar from '../../components/UserAvatar';
 
 import { Container, ImageNameContainer, UserName, EditIconButton, Input, LogoutButton, ButtonText } from './styles';
 
-import firestore from '@react-native-firebase/firestore';
+import CustomButton from '../../components/CustomButton';
 
 const Profile = () => {
- const {user, revokeAccess, logout} = useContext(AuthContext);
+ const {user, usersRef, revokeAccess, logout} = useContext(AuthContext);
  const [userData, setUserData] = useState({});
+ const [newName, setNewName] = useState(null);
+ const [newCompany, setNewCompany] = useState(null);
+ const [newImage, setNewImage] = useState(null);
  const theme = useTheme();
 
  function imagePickerCallback(data) {
@@ -34,21 +37,39 @@ const Profile = () => {
     return;
    }
 
-   setUserData(userData => {
-     return {...userData, image: data.assets[0].uri}
-   });
+   setNewImage(data.assets[0].uri);
+ }
+
+ async function saveData(){
+   await usersRef.doc(user.uid).set({
+     name: newName,
+     image: newImage,
+     company: newCompany
+   }, { merge: true })
+   .then(() => {
+    console.log("Document successfully written!");
+    })
+    .catch((error) => {
+        console.error("Error writing document: ", error);
+    });
  }
 
  useEffect(() => {
-  setUserData({
-    firstName: user.displayName.split(' ')[0],
-    lastName: user.displayName.split(' ')[1],
-    fullName: user.displayName,
-    image: user.photoURL,
-    company: ''
+  usersRef.doc(user.uid).onSnapshot(doc => {
+    const { image, name, company } = doc.data();
+
+    setUserData({
+      firstName: name.split(' ')[0],
+      lastName: name.split(' ')[1],
+      fullName: name,
+      image,
+      company
+    });
+    
   });
    
- }, [])
+ }, []);
+ 
 
  
 
@@ -59,7 +80,7 @@ const Profile = () => {
   return (
   <>
     <ImageNameContainer>
-      <UserAvatar newImage={userData.image}/>
+      <UserAvatar newImage={newImage !== null ? newImage : userData.image}/>
       <UserName>Olá, {userData.firstName}</UserName>
       <EditIconButton onPress={() => launchImageLibrary({}, imagePickerCallback)}>
         <Icon name='edit' size={17} color={theme.colors.secundary}>
@@ -73,11 +94,27 @@ const Profile = () => {
         <Input 
           placeholder="Nome"
           placeholderTextColor={theme.colors.secundary}
+          onChangeText={setNewName}
         />
 
         <Input 
           placeholder="Empresa"
           placeholderTextColor={theme.colors.secundary}
+          onChangeText={setNewCompany}
+        />
+
+        <CustomButton 
+          style={{
+            width: 222, 
+            height: 50,
+            backgroundColor: theme.colors.primary,
+          }}
+          icon={{
+            iconName:'save', 
+            iconSize: 15,
+          }}
+          buttonText={'Salvar alterações'}
+          onPress={saveData}
         />
 
         <LogoutButton onPress={handleLogout}>

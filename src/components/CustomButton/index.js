@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-
-// import { Container } from './styles';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const CustomButton = ({style, icon, buttonText, textColor, onPress}) => {
   const {iconName, iconSize, iconColor} = icon;
@@ -9,10 +8,10 @@ const CustomButton = ({style, icon, buttonText, textColor, onPress}) => {
   return (
     <TouchableOpacity style={[styles.button, style]} onPress={() => onPress()}>
       { icon !== '' 
-        && <FontAwesome
+        && <Icon
             style={{marginRight: 12}}
             name={iconName}
-            size={iconSize}
+            size={iconSize  !== undefined ? iconSize : 12}
             color={iconColor !== undefined ? iconColor : '#F8F8F8'}
           />
       }
@@ -24,7 +23,9 @@ const CustomButton = ({style, icon, buttonText, textColor, onPress}) => {
 const styles = StyleSheet.create({
   button: {
     marginTop: 20,
+    marginBottom: 27,
     borderRadius: 8,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 3,

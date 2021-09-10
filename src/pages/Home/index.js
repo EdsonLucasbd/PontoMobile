@@ -7,7 +7,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Container } from './styles';
 import { AuthContext } from '../../routes/AuthProvider';
 import UserAvatar from '../../components/UserAvatar';
-import CustomButton from '../../components/Button';
+import CustomButton from '../../components/CustomButton';
 import Timer from '../../components/Timer';
 
 

@@ -7,13 +7,14 @@ import firestore from '@react-native-firebase/firestore';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
-  const ref = firestore().collection('users');
+  const usersRef = firestore().collection('users');
   const [user, setUser] = useState(null);
   return (
     <AuthContext.Provider
       value={{
         user,
         setUser,
+        usersRef,
         googleLogin: async () => {
           try {
             // Get the users ID token
@@ -25,13 +26,13 @@ export const AuthProvider = ({children}) => {
             // Sign-in the user with the credential
             await auth().signInWithCredential(googleCredential)
             .then(data => {
-              ref.doc(data.user.uid).set({
+              usersRef.doc(data.user.uid).set({
                 name: data.user.displayName,
                 image: data.user.photoURL,
                 company: ''
               });
               console.log('User signed in!')
-            })
+            });
           } catch(err) {
             console.log(err);
           }
@@ -57,7 +58,14 @@ export const AuthProvider = ({children}) => {
 
             // Sign-in the user with the credential
             await auth().signInWithCredential(facebookCredential)
-            .then(() => console.log('User signed in!'));
+            .then(data => {
+              usersRef.doc(data.user.uid).set({
+                name: data.user.displayName,
+                image: data.user.photoURL,
+                company: ''
+              });
+              console.log('User signed in!')
+            });
 
           } catch (err) {
             console.log(err);
@@ -69,10 +77,6 @@ export const AuthProvider = ({children}) => {
           } catch (err) {
             console.log(err);
           }
-        },
-        isSignedIn: async () => {
-          const isSignedIn = await GoogleSignin.isSignedIn();
-          return isSignedIn;
         },
         revokeAccess: async () => {
           try {
