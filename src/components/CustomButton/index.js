@@ -15,7 +15,12 @@ const CustomButton = ({style, icon, buttonText, textColor, onPress}) => {
             color={iconColor !== undefined ? iconColor : '#F8F8F8'}
           />
       }
-      <Text style={textColor !== undefined ? {color: textColor} : {color: '#F8F8F8'}}>{buttonText}</Text>
+      <Text style={[
+        styles.text,
+        textColor !== undefined 
+        ? {color: textColor} 
+        : {color: '#F8F8F8'}
+        ]}>{buttonText}</Text>
     </TouchableOpacity>
   );
 }
@@ -29,6 +34,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 3,
+  },
+  text: {
+    fontFamily: 'Sora-SemiBold',
+    fontSize: 16
   }
 })
 

@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { TouchableWithoutFeedback, Keyboard, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import LogOutIcon from 'react-native-vector-icons/FontAwesome';
 import {launchImageLibrary} from 'react-native-image-picker';
 
 import { AuthContext } from '../../routes/AuthProvider';
@@ -15,9 +16,9 @@ import CustomButton from '../../components/CustomButton';
 const Profile = () => {
  const {user, usersRef, revokeAccess, logout} = useContext(AuthContext);
  const [userData, setUserData] = useState({});
- const [newName, setNewName] = useState(null);
- const [newCompany, setNewCompany] = useState(null);
- const [newImage, setNewImage] = useState(null);
+ const [name, setName] = useState();
+ const [company, setCompany] = useState();
+ const [image, setImage] = useState();
  const theme = useTheme();
 
  function imagePickerCallback(data) {
@@ -37,21 +38,65 @@ const Profile = () => {
     return;
    }
 
-   setNewImage(data.assets[0].uri);
+   setImage(data.assets[0].uri);
  }
 
- async function saveData(){
-   await usersRef.doc(user.uid).set({
-     name: newName,
-     image: newImage,
-     company: newCompany
-   }, { merge: true })
+ /* function firebaseUpdate({info}){
+   usersRef.doc(user.uid).update({
+     
+   })
    .then(() => {
     console.log("Document successfully written!");
     })
     .catch((error) => {
         console.error("Error writing document: ", error);
     });
+ } */
+ 
+ function checkChanges(){
+   try {
+    if (name !== undefined && image !== undefined && company !== undefined) {
+      usersRef.doc(user.uid).update({
+        name,
+        image,
+        company
+      })
+      .then(() => {
+       console.log("Document successfully written!");
+       });
+     } else {
+      if (name !== undefined){
+        usersRef.doc(user.uid).update({
+          name
+        })
+        .then(() => {
+         console.log("Name successfully written!");
+         })
+       }
+      if (image !== undefined){
+        usersRef.doc(user.uid).update({
+        image
+      })
+      .then(() => {
+       console.log("Image successfully written!");
+       })
+      }
+      if (company !== undefined){
+        usersRef.doc(user.uid).update({
+        company
+      })
+      .then(() => {
+       console.log("Company successfully written!");
+       })
+     }
+    }
+   } catch(error) {
+      console.error("Error writing document: ", error);
+   };
+ }
+
+function saveData(){
+  checkChanges();
  }
 
  useEffect(() => {
@@ -80,7 +125,7 @@ const Profile = () => {
   return (
   <>
     <ImageNameContainer>
-      <UserAvatar newImage={newImage !== null ? newImage : userData.image}/>
+      <UserAvatar newImage={image !== undefined ? image : userData.image}/>
       <UserName>Olá, {userData.firstName}</UserName>
       <EditIconButton onPress={() => launchImageLibrary({}, imagePickerCallback)}>
         <Icon name='edit' size={17} color={theme.colors.secundary}>
@@ -94,13 +139,15 @@ const Profile = () => {
         <Input 
           placeholder="Nome"
           placeholderTextColor={theme.colors.secundary}
-          onChangeText={setNewName}
+          onChangeText={setName}
+          defaultValue={name !== undefined ? name : userData.fullName}
         />
 
         <Input 
           placeholder="Empresa"
           placeholderTextColor={theme.colors.secundary}
-          onChangeText={setNewCompany}
+          onChangeText={setCompany}
+          defaultValue={userData.company !== '' ? userData.company : 'Sem empresa'}
         />
 
         <CustomButton 
@@ -118,6 +165,11 @@ const Profile = () => {
         />
 
         <LogoutButton onPress={handleLogout}>
+          <LogOutIcon 
+            name='sign-out'
+            size={15}
+            color={theme.colors.secundary}
+          />
           <ButtonText>Sair</ButtonText>
         </LogoutButton>
       </Container>

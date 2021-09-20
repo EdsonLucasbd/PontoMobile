@@ -10,13 +10,13 @@ const UserAvatar = ({newImage}) => {
   const [isLoading, setIsLoading] = useState(true);
   const {user, usersRef} = useContext(AuthContext);
   useEffect(() => {
-    return usersRef.doc(user.uid).onSnapshot(doc => {
-        const { image } = doc.data();
-        setUserImage(image);
-        if (isLoading) {
-          setIsLoading(false);
-        };
-      });
+    usersRef.doc(user.uid).onSnapshot(doc => {
+      const { image } = doc.data();
+      setUserImage(image);
+      if (isLoading) {
+        setIsLoading(false);
+      };
+    });
   },[])
 
   return (

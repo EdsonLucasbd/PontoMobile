@@ -8,41 +8,15 @@ import { Container } from './styles';
 import { AuthContext } from '../../routes/AuthProvider';
 import UserAvatar from '../../components/UserAvatar';
 import CustomButton from '../../components/CustomButton';
-import Timer from '../../components/Timer';
+import Timestamp from '../../components/Timestamp';
 
 
 const Home = () => {
-  const theme = useTheme();
-  //const {user} = useContext(AuthContext);
-  // const [user, setUser] = useState(null);
-  /* useEffect(() => {
-    const getCurrentUser = async () => {
-      const currentUser = await GoogleSignin.getCurrentUser();
-      setUser(currentUser);
-    };
-    getCurrentUser();
-  }, []); */
-  
-  //const { photo } = user.user;
-  
-  //console.log('DADOS 2: ', photo)
   
   return (
     <Container>
       <UserAvatar />
-      <Timer />
-      <CustomButton 
-        style={{
-          width: 206, 
-          height: 82,
-          backgroundColor: theme.colors.primary,
-        }}
-        icon=''
-        buttonText={'Iniciar jornada'}
-        onPress={() => {}}
-      />
-      {/* <Image source={{uri:{photo},}}/> */}
-      {/* <Text>Olá! {user.uid}</Text> */}
+      <Timestamp />
     </Container>
   );
 }

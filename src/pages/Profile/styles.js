@@ -31,7 +31,7 @@ export const Input = styled.TextInput`
   height: 47px;
   border-radius: 8px;
   margin-bottom: 43px;
-  border: 2px solid ${({theme}) => theme.colors.boxShadow};
+  /* border: 2px solid ${({theme}) => theme.colors.boxShadow}; */
   padding-left: 11px;
   background-color: ${({theme}) => theme.colors.secundaryText};
   color: ${({theme}) => theme.colors.secundary};
@@ -40,6 +40,7 @@ export const Input = styled.TextInput`
 export const LogoutButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
+  flex-direction: row;
   width: 222px;
   height: 36px;
   background-color: transparent;
@@ -48,6 +49,7 @@ export const LogoutButton = styled.TouchableOpacity`
 `;
 
 export const ButtonText = styled.Text`
+  margin-left: 12px;
   font-size: 16px;
   font-family: 'Sora-SemiBold';
   color: ${({theme}) => theme.colors.secundary};

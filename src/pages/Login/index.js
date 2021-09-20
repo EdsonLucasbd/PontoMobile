@@ -1,18 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import SocialButton from '../../components/SocialButton';
 import { Container, MyLogo } from './styles';
 
-import onGoogleButtonPress from '../../services/googleLogin';
 import { AuthContext } from '../../routes/AuthProvider';
-
-import firestore from '@react-native-firebase/firestore';
 
 const Login = () => {
   const {googleLogin, facebookLogin} = useContext(AuthContext);
-
-  const googleHandleClick = () => {
-
-  }
 
   return (
     <Container>

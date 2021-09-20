@@ -26,11 +26,18 @@ export const AuthProvider = ({children}) => {
             // Sign-in the user with the credential
             await auth().signInWithCredential(googleCredential)
             .then(data => {
-              usersRef.doc(data.user.uid).set({
-                name: data.user.displayName,
-                image: data.user.photoURL,
-                company: ''
-              });
+              usersRef.doc(data.user.uid).get().then((document) => {
+                if(document.exists) {
+                  console.log('User exists');
+                  return;
+                } else {
+                  usersRef.doc(data.user.uid).set({
+                    name: data.user.displayName,
+                    image: data.user.photoURL,
+                    company: ''
+                  });
+                }
+              })
               console.log('User signed in!')
             });
           } catch(err) {
