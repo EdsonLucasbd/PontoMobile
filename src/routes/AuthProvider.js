@@ -8,6 +8,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
   const usersRef = firestore().collection('users');
+  const timeSheetRef = firestore().collection('users_time_sheet');
   const [user, setUser] = useState(null);
   return (
     <AuthContext.Provider
@@ -15,6 +16,7 @@ export const AuthProvider = ({children}) => {
         user,
         setUser,
         usersRef,
+        timeSheetRef,
         googleLogin: async () => {
           try {
             // Get the users ID token
