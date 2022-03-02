@@ -81,54 +81,50 @@ const Timestamp = () => {
   }
 
   function handleStartClick(){
-    //setType(types[0])
     setIsStarted(true)
     pushList(types[0])
-    console.log('inicio jornada', timeList)
   }
   function handleFinishClick(){
-    //setType('Fim de jornada')
     setIsStarted(false)
     setIsFinishable(false)
     setIsLunch(false)
     setIsStopped(false)
     pushList(types[1])
+    pushList(types[1])
     clearArray(timeList)
-    console.log('fim jornada', timeList)
   }
   function handleLunchClick(){
-    //setType('Almoço')
     setIsLunch(true)
     setIsFinishable(true)
     pushList(types[2])
-    console.log('inicio almoço', timeList)
   }
   function handleStopClick(){
-    //setType('Inicio de pausa')
     setIsStopped(true)
     pushList(types[3])
-    console.log('inicio pausa', timeList)
   }
   function handleResumeClick(){
-    //setType('Retorno')
     setIsLunch(false)
     setIsStopped(false)
     pushList(types[4])
-    console.log('fim pausa', timeList)
   }
 
   const formattedTime = format(
     date, 'kk:mm:ss'
   )
 
-
   function pushList(typeName){
+    console.log(typeName, timeList)
     let newTimeList = {};
     newTimeList.time = formattedTime;
     newTimeList.type = typeName;
-    setTimeList((prev) => {
-      return [...prev, newTimeList]
-    })
+    if (typeName === types[0]) {
+      setTimeList([newTimeList])
+    } else {
+      setTimeList([
+        ...timeList,
+        newTimeList
+      ])
+    }
   }
 
   function renderButtons(){
