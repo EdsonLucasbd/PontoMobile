@@ -33,18 +33,12 @@ const Timestamp = () => {
   const theme = useTheme();
   const { user, timeSheetRef } = useContext(AuthContext);
 
-  // const [type, setType] = useState('');
   const [timeList, setTimeList] = useState([]);
-  // const myList = [];
   const [isStarted, setIsStarted] = useState(false);
   const [isLunch, setIsLunch] = useState(false);
   const [isStopped, setIsStopped] = useState(false);
   const [isFinishable, setIsFinishable] = useState(false);
   var date = new Date();
-  // const day = getDate(date);
-  // const weekDay = getDay(date);
-  // const month = getMonth(date);
-  // const year = getYear(date);
   const types = [
     'Inicio de jornada',
     'Fim de jornada',
@@ -68,11 +62,15 @@ const Timestamp = () => {
     // timeSheetRef.doc(user.uid).set({data: arr}, {merge: true})
     timeSheetRef.doc(user.uid).get().then((document) => {
       if(document.exists) {
-        // set timestamp
-        timeSheetRef.doc(user.uid).update({
-          createdAt: firestore.FieldValue.serverTimestamp()
-        })
-        timeSheetRef.doc(user.uid).set({data: arr}, {merge: true})
+        try {
+          // set timestamp
+          timeSheetRef.doc(user.uid).update({
+            createdAt: firestore.FieldValue.serverTimestamp()
+          })
+          timeSheetRef.doc(user.uid).set({data: arr}, {merge: true})
+        } catch (error) {
+          console.error('ERROR', error)
+        }
       }
     });
     setTimeList([]);
@@ -89,7 +87,6 @@ const Timestamp = () => {
     setIsFinishable(false)
     setIsLunch(false)
     setIsStopped(false)
-    pushList(types[1])
     pushList(types[1])
     clearArray(timeList)
   }
@@ -117,14 +114,10 @@ const Timestamp = () => {
     let newTimeList = {};
     newTimeList.time = formattedTime;
     newTimeList.type = typeName;
-    if (typeName === types[0]) {
-      setTimeList([newTimeList])
-    } else {
-      setTimeList([
-        ...timeList,
-        newTimeList
-      ])
-    }
+    setTimeList([
+      ...timeList,
+      newTimeList
+    ])
   }
 
   function renderButtons(){
@@ -236,6 +229,7 @@ const Timestamp = () => {
       <FlatList 
         data={timeList} 
         renderItem={renderItem}
+        extraData={timeList}
         ItemSeparatorComponent={() => <Separator/>}
       />
         {renderButtons()}
