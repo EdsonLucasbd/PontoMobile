@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import { FlatList } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
@@ -16,16 +16,7 @@ import {
   TimeItem 
 } from './styles';
 
-import { 
-  format, 
-  getDate,
-  getDay,
-  getMonth,
-  getYear,
-  getHours,
-  getMinutes,
-  getSeconds,
-} from 'date-fns';
+import { format } from 'date-fns';
 
 import pt from 'date-fns/locale/pt-BR';
 
@@ -59,15 +50,26 @@ const Timestamp = () => {
   );
 
   function clearArray(arr) {
+    const daily_dot = {}
+    arr.map((val) => {
+      daily_dot[`${val.type}`] = val
+    })
     // timeSheetRef.doc(user.uid).set({data: arr}, {merge: true})
     timeSheetRef.doc(user.uid).get().then((document) => {
       if(document.exists) {
         try {
           // set timestamp
+          // timeSheetRef.doc(user.uid).set({dot_markings: arr}, {merge: true})
+          // .then(() => {
+          //   timeSheetRef.doc(user.uid).update({
+          //     createdAt: firestore.FieldValue.serverTimestamp(),
+          //     dot_markings: firestore.FieldValue.arrayUnion(arr)
+          //   })
+          // })
           timeSheetRef.doc(user.uid).update({
-            createdAt: firestore.FieldValue.serverTimestamp()
+            createdAt: firestore.FieldValue.serverTimestamp(),
+            dot_markings: firestore.FieldValue.arrayUnion(daily_dot)
           })
-          timeSheetRef.doc(user.uid).set({data: arr}, {merge: true})
         } catch (error) {
           console.error('ERROR', error)
         }
@@ -78,11 +80,11 @@ const Timestamp = () => {
     return newArr;
   }
 
-  function handleStartClick(){
+  function handleClickStart(){
     setIsStarted(true)
     pushList(types[0])
   }
-  function handleFinishClick(){
+  function handleClickFinish(){
     setIsStarted(false)
     setIsFinishable(false)
     setIsLunch(false)
@@ -90,16 +92,16 @@ const Timestamp = () => {
     pushList(types[1])
     clearArray(timeList)
   }
-  function handleLunchClick(){
+  function handleClickLunch(){
     setIsLunch(true)
     setIsFinishable(true)
     pushList(types[2])
   }
-  function handleStopClick(){
+  function handleClickStop(){
     setIsStopped(true)
     pushList(types[3])
   }
-  function handleResumeClick(){
+  function handleClickResume(){
     setIsLunch(false)
     setIsStopped(false)
     pushList(types[4])
@@ -110,14 +112,15 @@ const Timestamp = () => {
   )
 
   function pushList(typeName){
-    console.log(typeName, timeList)
     let newTimeList = {};
     newTimeList.time = formattedTime;
     newTimeList.type = typeName;
+    
     setTimeList([
       ...timeList,
       newTimeList
     ])
+    console.log(typeName, timeList)
   }
 
   function renderButtons(){
@@ -133,7 +136,7 @@ const Timestamp = () => {
               }}
               icon={{iconName: 'caret-left', iconSize: 15}}
               buttonText={'Retornar'}
-              onPress={handleResumeClick}
+              onPress={handleClickResume}
             />
           </ButtonsContainer>
         )
@@ -151,7 +154,7 @@ const Timestamp = () => {
               icon={{iconName: 'hand-stop-o', iconSize: 15, iconColor: theme.colors.defaultText}}
               buttonText={'Pausa rápida'}
               textColor={ theme.colors.defaultText }
-              onPress={handleStopClick}
+              onPress={handleClickStop}
             />
             <CustomButton 
               style={{
@@ -161,7 +164,7 @@ const Timestamp = () => {
               }}
               icon={{iconName: 'close', iconSize: 15}}
               buttonText={'Finalizar jornada'}
-              onPress={handleFinishClick}
+              onPress={handleClickFinish}
             />
           </ButtonsContainer>
         )
@@ -178,7 +181,7 @@ const Timestamp = () => {
                 }}
                 icon={{iconName: 'cutlery', iconSize: 15}}
                 buttonText={'Almoço'}
-                onPress={handleLunchClick}
+                onPress={handleClickLunch}
               />
               <CustomButton 
                 style={{
@@ -190,7 +193,7 @@ const Timestamp = () => {
                 icon={{iconName: 'hand-stop-o', iconSize: 15, iconColor: theme.colors.defaultText}}
                 buttonText={'Pausa rápida'}
                 textColor={ theme.colors.defaultText }
-                onPress={handleStopClick}
+                onPress={handleClickStop}
               />
             </StopButtonsContainer>
             <CustomButton 
@@ -201,7 +204,7 @@ const Timestamp = () => {
               }}
               icon={{iconName: 'close', iconSize: 15}}
               buttonText={'Finalizar jornada'}
-              onPress={handleFinishClick}
+              onPress={handleClickFinish}
             />
           </ButtonsContainer>
       )
@@ -216,7 +219,7 @@ const Timestamp = () => {
             }}
             icon={{iconName: 'play', iconSize: 15}}
             buttonText={'Iniciar jornada'}
-            onPress={handleStartClick}
+            onPress={handleClickStart}
           />
         </ButtonsContainer>
       )
